@@ -314,6 +314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
   size: {x: 640, y: 360}
+  population: 1000
   displayTexture: {fileID: 0}
   trailMap: {fileID: 0}
   diffusedTrailMap: {fileID: 0}

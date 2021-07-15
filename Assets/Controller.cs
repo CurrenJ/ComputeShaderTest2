@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     public ComputeShader computeShader;
     ComputeBuffer agentBuffer;
     public Vector2 size;
+    public int population;
     [SerializeField, HideInInspector] protected RenderTexture displayTexture;
     [SerializeField, HideInInspector] protected RenderTexture trailMap;
     [SerializeField, HideInInspector] protected RenderTexture diffusedTrailMap;
@@ -41,18 +42,17 @@ public class Controller : MonoBehaviour
             computeShader.SetInt(Shader.PropertyToID("height"), (int)size.y);
             computeShader.SetFloat("decayRate", 0.00001f);
             computeShader.SetFloat("diffuseRate", 1f);
-            computeShader.Dispatch(0, 16, 1, 1);
+            computeShader.Dispatch(0, population, 1, 1);
             computeShader.Dispatch(1, Screen.width / 8, Screen.height / 8, 1);
             ComputeHelper.CopyRenderTexture(diffusedTrailMap, trailMap);
-            //computeShader.Dispatch(3, Screen.width / 8, Screen.height / 8, 1);
+            computeShader.Dispatch(2, Screen.width / 8, Screen.height / 8, 1);
         }
     }
 
     private void CreateAgents()
     {
         // Create agents with initial positions and angles
-        int n = 100000;
-        Agent[] agents = new Agent[n];
+        Agent[] agents = new Agent[population];
         for (int i = 0; i < agents.Length; i++)
         {
             Vector2 centre = new Vector2(size.x / 2, size.y / 2);
@@ -60,15 +60,15 @@ public class Controller : MonoBehaviour
             float randomAngle = Random.value * Mathf.PI * 2;
             float angle = Mathf.Atan2(centre.y - startPos.y, centre.x - startPos.x);
 
-            // startPos = centre;
-            //angle = randomAngle;
+            startPos = centre + Random.insideUnitCircle * size.y * 0.5f;
+            angle = Mathf.Atan2((centre - startPos).normalized.y, (centre - startPos).normalized.x);
 
             agents[i] = new Agent() { position = startPos, angle = angle };
         }
 
 
         ComputeHelper.CreateAndSetBuffer<Agent>(ref agentBuffer, agents, computeShader, "agents", 0);
-        computeShader.SetInt("numAgents", n);
+        computeShader.SetInt("numAgents", population);
     }
 
     private void Render(RenderTexture destination)
@@ -76,8 +76,8 @@ public class Controller : MonoBehaviour
         UpdateSim();
         SetShaderParameters();
 
-        Graphics.Blit(trailMap, destination);
-        //Graphics.Blit(displayTexture, destination);
+        // Graphics.Blit(trailMap, destination);
+        Graphics.Blit(displayTexture, destination);
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)

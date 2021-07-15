@@ -23,7 +23,13 @@ float scaleToRange01(uint state)
 }
 
 float4 ColorLerp(float t){
-    return lerp(lerp(float4(0, 0, 0, 0.0), float4(0.8, 0.4627, 0.8745, 1.0), t), float4(0.580, 0.356, 0.098, 1), 1-t);
+    float4 a = float4(0.776, 0.784, 0.984, 1);
+    float4 b = float4(0.2, 0.160, 0.298, 1.0);
+    float4 c = float4(0, 0, 0, 0);
+    // float4 a = float4(0.976, 0.913, 0.764, 1.0);
+    // float4 b = float4(0.952, 0.760, 0.286, 1.0);
+    // float4 c = float4(1, 0.788, 0.278, 0);
+    return lerp(lerp(c, a, t), b, 1-t);
 }
 
 struct Agent {
