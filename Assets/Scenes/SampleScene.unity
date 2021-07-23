@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -228,6 +228,8 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -313,8 +315,187 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
-  size: {x: 640, y: 360}
-  population: 1000
+  referenceResolution: {x: 1920, y: 1080}
+  targetResolution: {x: 640, y: 360}
+  population: 50000
   displayTexture: {fileID: 0}
   trailMap: {fileID: 0}
   diffusedTrailMap: {fileID: 0}
+  obstructionMap: {fileID: 0}
+  playerMap: {fileID: 0}
+  spawnMode: 4
+  turnFactor: 0.5
+  decayFactor: 0.01
+  diffuseFactor: 0.1
+  moveSpeed: 2.66
+  showAgentsOnly: 0
+  showObstructionsOnly: 0
+  teams: 3
+  teamAColorTarget: {r: 0.37254903, g: 0.23529413, b: 0.45098042, a: 0}
+  teamBColorTarget: {r: 0.61960787, g: 0.2784314, b: 0.43921572, a: 0}
+  teamCColorTarget: {r: 0.91372555, g: 0.8745099, b: 0.8745099, a: 0}
+  bgColorTarget: {r: 0.18039216, g: 0.14509805, b: 0.19607845, a: 0}
+  teamAColor: {r: 0.37288293, g: 0.23709506, b: 0.4528302, a: 0}
+  teamBColor: {r: 0.61960787, g: 0.2784314, b: 0.4392157, a: 0}
+  teamCColor: {r: 0.9150943, g: 0.876246, b: 0.876246, a: 0}
+  bgColor: {r: 0.18039216, g: 0.14509805, b: 0.19607843, a: 0}
+  homes:
+  - {x: 0, y: 0.25, z: 59}
+  - {x: 0, y: -0.25, z: 59}
+  - {x: 0, y: 0, z: 50}
+  useCurrenPastelPack: 1
+  pastelPackLights:
+  - {r: 0.41960785, g: 0.30588236, b: 0.44313726, a: 0}
+  - {r: 0.2509804, g: 0.18039216, b: 0.16470589, a: 0}
+  - {r: 0.45490196, g: 0.07058824, b: 0.11372549, a: 0}
+  - {r: 0.115877524, g: 0.48202792, b: 0.7924528, a: 0}
+  - {r: 0.89411765, g: 0.74509805, b: 0.61960787, a: 0}
+  - {r: 0.45882353, g: 0.28235295, b: 0.36862746, a: 0}
+  - {r: 0.7436679, g: 0.6114721, b: 0.8584906, a: 0}
+  pastelPackMids:
+  - {r: 0.7607843, g: 0.69803923, b: 0.7058824, a: 0}
+  - {r: 0.40784314, g: 0.27058825, b: 0.31764707, a: 0}
+  - {r: 0.34509805, g: 0.047058824, b: 0.12156863, a: 0}
+  - {r: 0.24256852, g: 0.50556815, b: 0.745283, a: 0}
+  - {r: 0.8156863, g: 0.88235295, b: 0.83137256, a: 0}
+  - {r: 0.31764707, g: 0.6392157, b: 0.6392157, a: 0}
+  - {r: 0.61074984, g: 0.4783731, b: 0.8113208, a: 0}
+  pastelPackHighs:
+  - {r: 0.22745098, g: 0.26666668, b: 0.32941177, a: 0}
+  - {r: 0.6117647, g: 0.8156863, b: 0.56078434, a: 0}
+  - {r: 0.77254903, g: 0.13333334, b: 0.2, a: 0}
+  - {r: 0.13333333, g: 0.5991927, b: 0.77254903, a: 0}
+  - {r: 0.8509804, g: 0.8235294, b: 0.7137255, a: 0}
+  - {r: 0.7647059, g: 0.9137255, b: 0.5686275, a: 0}
+  - {r: 0.49803922, g: 0.34509805, b: 0.7254902, a: 0}
+  pastelBackBgs:
+  - {r: 0.5035155, g: 0.59441406, b: 0.6886792, a: 0}
+  - {r: 0.80784315, g: 0.627451, b: 0.68235296, a: 0}
+  - {r: 0.654902, g: 0.2, b: 0.24705882, a: 0}
+  - {r: 0.09638661, g: 0.3584906, b: 0.09638661, a: 0}
+  - {r: 0.44313726, g: 0.4117647, b: 0.47843137, a: 0}
+  - {r: 0.79607844, g: 0.5647059, b: 0.3019608, a: 0}
+  - {r: 0.122641504, g: 0.11749471, b: 0.11165005, a: 0}
+  screenScalingFactor: 6
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b0d72fe6befd04d963373b8c247659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  computeShader: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
+  referenceResolution: {x: 1920, y: 1080}
+  targetResolution: {x: 640, y: 360}
+  population: 50000
+  displayTexture: {fileID: 0}
+  trailMap: {fileID: 0}
+  diffusedTrailMap: {fileID: 0}
+  obstructionMap: {fileID: 0}
+  playerMap: {fileID: 0}
+  spawnMode: 2
+  turnFactor: 0.011011125
+  decayFactor: 0.1
+  diffuseFactor: 0.7991785
+  moveSpeed: 5.4592385
+  showAgentsOnly: 0
+  showObstructionsOnly: 0
+  teams: 2
+  teamAColorTarget: {r: 0.89411765, g: 0.74509805, b: 0.61960787, a: 0}
+  teamBColorTarget: {r: 0.8156863, g: 0.88235295, b: 0.83137256, a: 0}
+  teamCColorTarget: {r: 0.8509804, g: 0.8235294, b: 0.7137255, a: 0}
+  bgColorTarget: {r: 0.44313726, g: 0.4117647, b: 0.47843137, a: 0}
+  teamAColor: {r: 0.86661756, g: 0.7209516, b: 0.6001567, a: 0}
+  teamBColor: {r: 0.79824704, g: 0.85619456, b: 0.8094059, a: 0}
+  teamCColor: {r: 0.8407518, g: 0.82319385, b: 0.70718557, a: 0}
+  bgColor: {r: 0.45873183, g: 0.42098722, b: 0.48715085, a: 0}
+  homes:
+  - {x: 0, y: 0.25, z: 59}
+  - {x: 0, y: -0.25, z: 59}
+  - {x: 0, y: 0, z: 50}
+  useCurrenPastelPack: 1
+  pastelPackLights:
+  - {r: 0.41960785, g: 0.30588236, b: 0.44313726, a: 0}
+  - {r: 0.2509804, g: 0.18039216, b: 0.16470589, a: 0}
+  - {r: 0.45490196, g: 0.07058824, b: 0.11372549, a: 0}
+  - {r: 0.115877524, g: 0.48202792, b: 0.7924528, a: 0}
+  - {r: 0.89411765, g: 0.74509805, b: 0.61960787, a: 0}
+  - {r: 0.45882353, g: 0.28235295, b: 0.36862746, a: 0}
+  - {r: 0.7436679, g: 0.6114721, b: 0.8584906, a: 0}
+  pastelPackMids:
+  - {r: 0.7607843, g: 0.69803923, b: 0.7058824, a: 0}
+  - {r: 0.40784314, g: 0.27058825, b: 0.31764707, a: 0}
+  - {r: 0.34509805, g: 0.047058824, b: 0.12156863, a: 0}
+  - {r: 0.24256852, g: 0.50556815, b: 0.745283, a: 0}
+  - {r: 0.8156863, g: 0.88235295, b: 0.83137256, a: 0}
+  - {r: 0.31764707, g: 0.6392157, b: 0.6392157, a: 0}
+  - {r: 0.61074984, g: 0.4783731, b: 0.8113208, a: 0}
+  pastelPackHighs:
+  - {r: 0.22745098, g: 0.26666668, b: 0.32941177, a: 0}
+  - {r: 0.6117647, g: 0.8156863, b: 0.56078434, a: 0}
+  - {r: 0.77254903, g: 0.13333334, b: 0.2, a: 0}
+  - {r: 0.13333333, g: 0.5991927, b: 0.77254903, a: 0}
+  - {r: 0.8509804, g: 0.8235294, b: 0.7137255, a: 0}
+  - {r: 0.7647059, g: 0.9137255, b: 0.5686275, a: 0}
+  - {r: 0.49803922, g: 0.34509805, b: 0.7254902, a: 0}
+  pastelBackBgs:
+  - {r: 0.5035155, g: 0.59441406, b: 0.6886792, a: 0}
+  - {r: 0.80784315, g: 0.627451, b: 0.68235296, a: 0}
+  - {r: 0.654902, g: 0.2, b: 0.24705882, a: 0}
+  - {r: 0.09638661, g: 0.3584906, b: 0.09638661, a: 0}
+  - {r: 0.44313726, g: 0.4117647, b: 0.47843137, a: 0}
+  - {r: 0.79607844, g: 0.5647059, b: 0.3019608, a: 0}
+  - {r: 0.122641504, g: 0.11749471, b: 0.11165005, a: 0}
+  screenScalingFactor: 4
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b0d72fe6befd04d963373b8c247659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  computeShader: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
+  referenceResolution: {x: 0, y: 0}
+  targetResolution: {x: 0, y: 0}
+  population: 250000
+  displayTexture: {fileID: 0}
+  trailMap: {fileID: 0}
+  diffusedTrailMap: {fileID: 0}
+  obstructionMap: {fileID: 0}
+  playerMap: {fileID: 0}
+  spawnMode: 3
+  turnFactor: 0.47253102
+  decayFactor: 0.1
+  diffuseFactor: 0.8434504
+  moveSpeed: 0
+  showAgentsOnly: 0
+  showObstructionsOnly: 0
+  teams: 2
+  teamAColorTarget: {r: 0, g: 0, b: 0, a: 0}
+  teamBColorTarget: {r: 0, g: 0, b: 0, a: 0}
+  teamCColorTarget: {r: 0, g: 0, b: 0, a: 0}
+  bgColorTarget: {r: 0, g: 0, b: 0, a: 0}
+  teamAColor: {r: 1, g: 0.8915094, b: 0.8915094, a: 0}
+  teamBColor: {r: 0.6603774, g: 0.2772339, b: 0.2772339, a: 0}
+  teamCColor: {r: 0.7169812, g: 0.36863655, b: 0.36863655, a: 1}
+  bgColor: {r: 0, g: 0, b: 0, a: 0}
+  homes:
+  - {x: 0, y: 0, z: 50}
+  - {x: 0, y: 0.25, z: 59}
+  - {x: 0, y: -0.25, z: 59}
+  useCurrenPastelPack: 0
+  pastelPackLights: []
+  pastelPackMids: []
+  pastelPackHighs: []
+  pastelBackBgs: []
+  screenScalingFactor: 0
