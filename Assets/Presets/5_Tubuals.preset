@@ -1,0 +1,379 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 5_Tubuals
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: a4b0d72fe6befd04d963373b8c247659, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: computeShader
+    value: 
+    objectReference: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
+  - target: {fileID: 0}
+    propertyPath: targetResolution.x
+    value: 640
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: targetResolution.y
+    value: 360
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: displayTexture
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: trailMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: diffusedTrailMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: obstructionMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: playerMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: population
+    value: 50000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teams
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spawnMode
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: decayFactor
+    value: 0.00001
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: diffuseFactor
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: generateRandomObstacles
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].turnFactor
+    value: 0.9708461
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].moveSpeed
+    value: 1.0339397
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].sensorAngleOffset
+    value: 18.215607
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].sensorPosOffset
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].sensorRadius
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].teamColor.r
+    value: 0.9711636
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].teamColor.g
+    value: 0.97169185
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].teamColor.b
+    value: 0.44460097
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[0].teamColor.a
+    value: 0.9999997
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].turnFactor
+    value: 0.91397953
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].moveSpeed
+    value: 0.78662145
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].sensorAngleOffset
+    value: 43.1453
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].sensorPosOffset
+    value: 14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].sensorRadius
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].teamColor.r
+    value: 0.2938363
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].teamColor.g
+    value: 0.5992782
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].teamColor.b
+    value: 0.877354
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[1].teamColor.a
+    value: 0.9999997
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].turnFactor
+    value: 0.9387456
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].moveSpeed
+    value: 1.1281283
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].sensorAngleOffset
+    value: 18.063686
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].sensorPosOffset
+    value: 12
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].sensorRadius
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].teamColor.r
+    value: 0.8018913
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].teamColor.g
+    value: 0.5030769
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].teamColor.b
+    value: 0.79087055
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamSettings.Array.data[2].teamColor.a
+    value: 0.9999997
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: stepsPerUpdate
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showAgentsOnly
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showObstructionsOnly
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: useRawColorChannels
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: useHsvForColorRemapping
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.r
+    value: 0.97116876
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.g
+    value: 0.9716981
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.b
+    value: 0.44459772
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.r
+    value: 0.29383236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.g
+    value: 0.59927183
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.b
+    value: 0.8773585
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.r
+    value: 0.8018868
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.g
+    value: 0.5030705
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.b
+    value: 0.79087573
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.r
+    value: 0.13741545
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.g
+    value: 0.13896438
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.b
+    value: 0.1509434
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.r
+    value: 0.13741744
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.g
+    value: 0.13896637
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.b
+    value: 0.15094541
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.a
+    value: 0.9999997
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: useCurrenPastelPack
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: paletteModules.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: paletteModules.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: renderToPng
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: saveRawChannelsSeparately
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: path
+    value: Ant Renders~\22\
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: frame
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: step
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: renderTimeScale
+    value: 0.02
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: framesPerSecond
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: frameLimit
+    value: 1800
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].y
+    value: 0.25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].z
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].y
+    value: -0.25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].z
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].z
+    value: 50
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

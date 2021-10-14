@@ -1,0 +1,743 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ControllerIris2
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: a4b0d72fe6befd04d963373b8c247659, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: computeShader
+    value: 
+    objectReference: {fileID: 7200000, guid: c370d4aedcbc4ad48bf3fc166cd10d88, type: 3}
+  - target: {fileID: 0}
+    propertyPath: referenceResolution.x
+    value: 1920
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: referenceResolution.y
+    value: 1080
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: targetResolution.x
+    value: 640
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: targetResolution.y
+    value: 360
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: population
+    value: 50000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: displayTexture
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: trailMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: diffusedTrailMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: obstructionMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: playerMap
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spawnMode
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: turnFactor
+    value: 0.0026218893
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: decayFactor
+    value: 0.1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: diffuseFactor
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: moveSpeed
+    value: 5.909436
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showAgentsOnly
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: showObstructionsOnly
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teams
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.r
+    value: 0.45882353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.g
+    value: 0.28235295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.b
+    value: 0.36862746
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColorTarget.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.r
+    value: 0.31764707
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.g
+    value: 0.6392157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.b
+    value: 0.6392157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColorTarget.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.r
+    value: 0.7647059
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.g
+    value: 0.9137255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.b
+    value: 0.5686275
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColorTarget.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.r
+    value: 0.79607844
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.g
+    value: 0.5647059
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.b
+    value: 0.3019608
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColorTarget.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColor.r
+    value: 0.45883417
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColor.g
+    value: 0.28236365
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColor.b
+    value: 0.3686379
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamAColor.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColor.r
+    value: 0.3176578
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColor.g
+    value: 0.6392358
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColor.b
+    value: 0.6392355
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamBColor.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColor.r
+    value: 0.7647251
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColor.g
+    value: 0.9137063
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColor.b
+    value: 0.56864697
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: teamCColor.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.r
+    value: 0.79605794
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.g
+    value: 0.5646863
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.b
+    value: 0.30197105
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bgColor.a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].y
+    value: 0.25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[0].z
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].y
+    value: -0.25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[1].z
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: homes.Array.data[2].z
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: useCurrenPastelPack
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.size
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[0].r
+    value: 0.41960785
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[0].g
+    value: 0.30588236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[0].b
+    value: 0.44313726
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[0].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[1].r
+    value: 0.2509804
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[1].g
+    value: 0.18039216
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[1].b
+    value: 0.16470589
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[1].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[2].r
+    value: 0.45490196
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[2].g
+    value: 0.07058824
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[2].b
+    value: 0.11372549
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[2].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[3].r
+    value: 0.115877524
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[3].g
+    value: 0.48202792
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[3].b
+    value: 0.7924528
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[3].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[4].r
+    value: 0.89411765
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[4].g
+    value: 0.74509805
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[4].b
+    value: 0.61960787
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[4].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[5].r
+    value: 0.45882353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[5].g
+    value: 0.28235295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[5].b
+    value: 0.36862746
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[5].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[6].r
+    value: 0.7436679
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[6].g
+    value: 0.6114721
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[6].b
+    value: 0.8584906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackLights.Array.data[6].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.size
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[0].r
+    value: 0.7607843
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[0].g
+    value: 0.69803923
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[0].b
+    value: 0.7058824
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[0].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[1].r
+    value: 0.40784314
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[1].g
+    value: 0.27058825
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[1].b
+    value: 0.31764707
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[1].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[2].r
+    value: 0.34509805
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[2].g
+    value: 0.047058824
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[2].b
+    value: 0.12156863
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[2].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[3].r
+    value: 0.24256852
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[3].g
+    value: 0.50556815
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[3].b
+    value: 0.745283
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[3].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[4].r
+    value: 0.8156863
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[4].g
+    value: 0.88235295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[4].b
+    value: 0.83137256
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[4].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[5].r
+    value: 0.31764707
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[5].g
+    value: 0.6392157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[5].b
+    value: 0.6392157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[5].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[6].r
+    value: 0.61074984
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[6].g
+    value: 0.4783731
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[6].b
+    value: 0.8113208
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackMids.Array.data[6].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.size
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[0].r
+    value: 0.22745098
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[0].g
+    value: 0.26666668
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[0].b
+    value: 0.32941177
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[0].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[1].r
+    value: 0.6117647
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[1].g
+    value: 0.8156863
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[1].b
+    value: 0.56078434
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[1].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[2].r
+    value: 0.77254903
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[2].g
+    value: 0.13333334
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[2].b
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[2].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[3].r
+    value: 0.13333333
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[3].g
+    value: 0.5991927
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[3].b
+    value: 0.77254903
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[3].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[4].r
+    value: 0.8509804
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[4].g
+    value: 0.8235294
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[4].b
+    value: 0.7137255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[4].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[5].r
+    value: 0.7647059
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[5].g
+    value: 0.9137255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[5].b
+    value: 0.5686275
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[5].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[6].r
+    value: 0.49803922
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[6].g
+    value: 0.34509805
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[6].b
+    value: 0.7254902
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelPackHighs.Array.data[6].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.size
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[0].r
+    value: 0.5035155
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[0].g
+    value: 0.59441406
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[0].b
+    value: 0.6886792
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[0].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[1].r
+    value: 0.80784315
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[1].g
+    value: 0.627451
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[1].b
+    value: 0.68235296
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[1].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[2].r
+    value: 0.654902
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[2].g
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[2].b
+    value: 0.24705882
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[2].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[3].r
+    value: 0.09638661
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[3].g
+    value: 0.3584906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[3].b
+    value: 0.09638661
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[3].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[4].r
+    value: 0.44313726
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[4].g
+    value: 0.4117647
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[4].b
+    value: 0.47843137
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[4].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[5].r
+    value: 0.79607844
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[5].g
+    value: 0.5647059
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[5].b
+    value: 0.3019608
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[5].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[6].r
+    value: 0.122641504
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[6].g
+    value: 0.11749471
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[6].b
+    value: 0.11165005
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pastelBackBgs.Array.data[6].a
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: screenScalingFactor
+    value: 2.25
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

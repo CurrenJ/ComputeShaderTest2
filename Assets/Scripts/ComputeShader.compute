@@ -1,23 +1,22 @@
 // Each #kernel tells which function to compile; you can have many kernels
-// kernel 1
+// kernel 0
 #pragma kernel UpdateAgents
 uint width;
 uint height;
 uint numAgents;
-float moveSpeed;
-float turnFactor;
 float decayFactor;
 float diffuseFactor;
 float deltaTime;
 float time;
+
 int3 redHome;
 int3 greenHome;
 int3 blueHome;
 
-float4 teamColorA;
-float4 teamColorB;
-float4 teamColorC;
 float4 bgColor;
+
+
+bool useHsvForColorRemapping;
 
 uint hash(uint state)
 {
@@ -35,32 +34,37 @@ float scaleToRange01(uint state)
     return state / 4294967295.0;
 }
 
-float4 ColorLerp(float4 t){
-	// Midnight
-    float4 a = float4(0.388235294, 0.11372549, 0.462745098, 1.0);
-	// Magenta Haze
-	float4 b = float4(0.619607843, 0.278431373, 0.439215686, 1.0);
-	// White
-	float4 c = float4(0.984313725, 0.984313725, 0.984313725, 1.0);
+float3 hsv2rgb(float3 c)
+{
+    float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
 
-	// Background Color
-	float bg = float4(0.180392157, 0.145098039, 0.196078431, 1.0);
+float3 rgb2hsv(float3 c)
+{
+    float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+    float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
 
-    // float4 a = float4(0.776, 0.784, 0.984, 1);
-    // float4 b = float4(0.2, 0.160, 0.298, 1.0);
-    // float4 c = float4(0, 0, 0, 0);
-    // float4 a = float4(0.976, 0.913, 0.764, 1.0);
-    // float4 b = float4(0.952, 0.760, 0.286, 1.0);
-    // float4 c = float4(1, 0.788, 0.278, 0);
-	// return lerp(lerp(lerp(bg, a, t.x), b, t.y), c, t.z);
-	return lerp(lerp(lerp(bgColor, teamColorA, t.x), teamColorB, t.y), teamColorC, t.z);
-	// return lerp(lerp(lerp(a, b, t.x), c, t.y), d, t.z);
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
 struct Agent {
     float2 position;
     float angle;
 	int4 speciesMaskAndTrailType;
+};
+
+struct TeamSettings {
+    float turnFactor;
+    float moveSpeed;
+    float sensorAngleOffset;
+    float sensorPosOffset;
+    float sensorRadius;
+   	float4 teamColor;
 };
 
 RWTexture2D<float4> TrailMap;
@@ -70,29 +74,69 @@ RWTexture2D<float4> HomeFoodTrailMap;
 RWTexture2D<float4> PlayerMap;
 RWStructuredBuffer<Agent> agents;
 
-float sense(Agent agent, float sensorAngleOffset) {
-	float sensorAngle = agent.angle + sensorAngleOffset;
+RWStructuredBuffer<TeamSettings> teamSettings;
+
+float4 ColorLerp(float4 t){
+	// Midnight
+    // float4 a = float4(0.388235294, 0.11372549, 0.462745098, 1.0);
+	// // Magenta Haze
+	// float4 b = float4(0.619607843, 0.278431373, 0.439215686, 1.0);
+	// // White
+	// float4 c = float4(0.984313725, 0.984313725, 0.984313725, 1.0);
+	// Background Color
+	// float bg = float4(0.180392157, 0.145098039, 0.196078431, 1.0);
+
+	if(!useHsvForColorRemapping)
+		return lerp(lerp(lerp(bgColor, teamSettings[0].teamColor, t.x), teamSettings[1].teamColor, t.y), teamSettings[2].teamColor, t.z);
+
+	float3 bg = rgb2hsv(bgColor);
+
+
+	float rgbSum = t.x + t.y + t.z;
+	float3 hsvLerped = rgb2hsv(teamSettings[0].teamColor * (t.x / rgbSum) + teamSettings[1].teamColor * (t.y / rgbSum) + teamSettings[2].teamColor * (t.z / rgbSum));
+	float bgAmount = (1 - sqrt(max(t.x, max(t.y, t.z))));
+	hsvLerped.y = lerp(hsvLerped.y, bg.y, bgAmount);
+	hsvLerped.z = lerp(hsvLerped.z, bg.z, bgAmount);
+	float3 rgbLerped = lerp(hsv2rgb(hsvLerped), bgColor, bgAmount);
+	if(t.x == 0 && t.y == 0 && t.z == 0)
+		rgbLerped = bgColor;
+
+	// 	float myMax = max(t.x, max(t.y, t.z));
+	// float3 rgbLerped = teamColorA;
+	// if(myMax == t.x) {
+	// 	rgbLerped = teamColorA;
+	// } else if(myMax == t.y) {
+	// 	rgbLerped = teamColorB;
+	// } else rgbLerped = teamColorC;
+	// float bgAmount = (1 - max(t.x, max(t.y, t.z)));
+	// rgbLerped = lerp(rgbLerped, bgColor, bgAmount);
+
+	return float4(rgbLerped.x, rgbLerped.y, rgbLerped.z, 1);
+}
+
+float sense(Agent agent, float direction /* L=-1, 0, R=1 */, TeamSettings currentTeamSettings) {
+	float sensorAngle = agent.angle + direction * (currentTeamSettings.sensorAngleOffset * (3.141592653f / 180));
 	float2 sensorDir = float2(cos(sensorAngle), sin(sensorAngle));
 
-	float2 sensorPos = agent.position + sensorDir * float(3);
+	float2 sensorPos = agent.position + sensorDir * currentTeamSettings.sensorPosOffset;
 	int sensorCentreX = (int) sensorPos.x;
 	int sensorCentreY = (int) sensorPos.y;
 
+	
 	float sum = 0;
-    float sensorSize = 2;
 
 	// Default, food-seeking. W is food trails
-	//int4 senseWeight = int4(0, 0, 0, 1);
-	//senseWeight.w = 1;
-	////When holding, follow species trail home.
-	//if (agent.speciesMaskAndTrailType.w == 1) {
-	//	senseWeight = agent.speciesMaskAndTrailType * 2 - 1;
-	//	senseWeight.w = 0;
-	//}
 	int4 senseWeight = agent.speciesMaskAndTrailType * 2 - 1;
+	// senseWeight.w = 1;
+	// //When holding, follow species trail home.
+	// if (agent.speciesMaskAndTrailType.w == 1) {
+	// 	senseWeight = agent.speciesMaskAndTrailType * 2 - 1;
+	// 	senseWeight.w = -1;
+	// }
+	// int4 senseWeight = agent.speciesMaskAndTrailType * 2 - 1;
 
-	for (int offsetX = -sensorSize; offsetX <= sensorSize; offsetX ++) {
-		for (int offsetY = -sensorSize; offsetY <= sensorSize; offsetY ++) {
+	for (int offsetX = -currentTeamSettings.sensorRadius; offsetX <= currentTeamSettings.sensorRadius; offsetX ++) {
+		for (int offsetY = -currentTeamSettings.sensorRadius; offsetY <= currentTeamSettings.sensorRadius; offsetY ++) {
 			int sampleX = min(width - 1, max(0, sensorCentreX + offsetX));
 			int sampleY = min(height - 1, max(0, sensorCentreY + offsetY));
 			sum += dot(senseWeight, TrailMap[int2(sampleX,sampleY)]);
@@ -115,14 +159,20 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
     if(id.x >= numAgents) { return; }
 
     Agent agent = agents[id.x];
+	
+	TeamSettings currentTeamSettings = teamSettings[0];
+	if(agent.speciesMaskAndTrailType.y == 1)
+		currentTeamSettings = teamSettings[1];
+	else if(agent.speciesMaskAndTrailType.z == 1)
+		currentTeamSettings = teamSettings[2];
+
 	uint random = hash(agent.position.y * width + agent.position.x + hash(id.x + time * 100000));
 
-    float sensorAngleRad = 30 * (3.1415 / 180);
-	float weightForward = sense(agent, 0);
-	float weightLeft = sense(agent, sensorAngleRad);
-	float weightRight = sense(agent, -sensorAngleRad);
+	float weightForward = sense(agent, 0, currentTeamSettings);
+	float weightLeft = sense(agent, 1, currentTeamSettings);
+	float weightRight = sense(agent, -1, currentTeamSettings);
     float randomSteerStrength = scaleToRange01(random);
-	float turnSpeed = turnFactor * 2 * 3.1415;
+	float turnSpeed = currentTeamSettings.turnFactor * 2 * 3.1415;
 	float oldAngle = agent.angle;
 	int holdingObstruction = agent.speciesMaskAndTrailType.w;
 
@@ -145,7 +195,7 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
 	}
 
     float2 direction = float2(cos(agent.angle), sin(agent.angle));
-    float2 newPos = agent.position + direction * moveSpeed * deltaTime;
+    float2 newPos = agent.position + direction *currentTeamSettings.moveSpeed * deltaTime;
 
 
 	int2 center = int2(width / 2, height / 2);
@@ -153,7 +203,9 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
 	int manhattanY = manhattan((int2)newPos, greenHome.xy);
 	int manhattanZ = manhattan((int2)newPos, blueHome.xy);
 	if(GetObstructed(int2(agent.position.xy)) == 0 && GetObstructed(int2(newPos)) > 0){
-		if(!holdingObstruction){
+		//PICKUP
+		//DISABLED
+		if(false && !holdingObstruction){
 			random = hash(random);
 			if(scaleToRange01(random) < 1 && ObstructionMap[int2(newPos)] > 0){
 				if (agents[id.x].speciesMaskAndTrailType.x > 0 && manhattanX > redHome.z) {
@@ -178,19 +230,20 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
 			newPos = agent.position;
 			agents[id.x].angle = randomAngle;
 	} else {
-		if(holdingObstruction && ObstructionMap[int2(newPos)] == 0 && (PlayerMap[int2(newPos)].x == 0 && PlayerMap[int2(newPos)].y == 0 && PlayerMap[int2(newPos)].z == 0)){
+		//DROP
+			//DISABLED
+		if(false && holdingObstruction && ObstructionMap[int2(newPos)] == 0 && (PlayerMap[int2(newPos)].x == 0 && PlayerMap[int2(newPos)].y == 0 && PlayerMap[int2(newPos)].z == 0)){
 			random = hash(random);
-			if(scaleToRange01(random) < 1){
-				if(agents[id.x].speciesMaskAndTrailType.x > 0 && manhattanX < redHome.z){
-					ObstructionMap[int2(newPos)] = 1;
-					agents[id.x].speciesMaskAndTrailType.w = 0;
-				} else if(agents[id.x].speciesMaskAndTrailType.y > 0 && manhattanY < greenHome.z){
-					ObstructionMap[int2(newPos)] = 1;
-					agents[id.x].speciesMaskAndTrailType.w = 0;
-				} else if(agents[id.x].speciesMaskAndTrailType.z > 0 && manhattanZ < blueHome.z){
-					ObstructionMap[int2(newPos)] = 1;
-					agents[id.x].speciesMaskAndTrailType.w = 0;
-				}
+
+			if(agents[id.x].speciesMaskAndTrailType.x > 0 && manhattanX < redHome.z){
+				ObstructionMap[int2(newPos)] = 1;
+				agents[id.x].speciesMaskAndTrailType.w = 0;
+			} else if(agents[id.x].speciesMaskAndTrailType.y > 0 && manhattanY < greenHome.z){
+				ObstructionMap[int2(newPos)] = 1;
+				agents[id.x].speciesMaskAndTrailType.w = 0;
+			} else if(agents[id.x].speciesMaskAndTrailType.z > 0 && manhattanZ < blueHome.z){
+				ObstructionMap[int2(newPos)] = 1;
+				agents[id.x].speciesMaskAndTrailType.w = 0;
 			}
 		}
 	}
@@ -214,13 +267,12 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
 	} else {
 		float4 oldTrail = TrailMap[int2(newPos)];
 		int4 trailType = agents[id.x].speciesMaskAndTrailType;
-		//int4 trailType = agents[id.x].speciesMaskAndTrailType;
-		//trailType.w = 0;
-		////If Holding
-		//if(agents[id.x].speciesMaskAndTrailType.w != 0){
-		//	trailType = int4(0, 0, 0, 1);
-		//	trailType.w = 1;
-		//}
+		// trailType.w = 1;
+		// //If holding
+		// if(agents[id.x].speciesMaskAndTrailType.w != 0){
+		// 	trailType = agents[id.x].speciesMaskAndTrailType;
+		// 	trailType.w = 0;
+		// }
     	TrailMap[int2(newPos)] = min(1, oldTrail + trailType * deltaTime);
 	}
 
@@ -228,7 +280,7 @@ void UpdateAgents(uint3 id : SV_DispatchThreadID){
 	PlayerMap[agents[id.x].position.xy] = agent.speciesMaskAndTrailType;
 }
 
-// kernel 2
+// kernel 1
 #pragma kernel Diffuse
 
 float decayRate;
@@ -261,7 +313,7 @@ void Diffuse (uint3 id : SV_DispatchThreadID)
 	DiffusedTrailMap[id.xy] = max(0, blurredCol - decayRate * deltaTime);
 }
 
-// kernel 3
+// kernel 2
 #pragma kernel ColorMap
 
 RWTexture2D<float4> Result;
@@ -274,7 +326,7 @@ void ColorMap (uint3 id : SV_DispatchThreadID){
     Result[id.xy] = ColorLerp(TrailMap[id.xy]);
 }
 
-// kernel 4
+// kernel 3
 #pragma kernel ObstructionGeneration
 
 [numthreads(8,8,1)]
@@ -283,8 +335,26 @@ void ObstructionGeneration (uint3 id : SV_DispatchThreadID){
 		return;
 	}
 
-	float manhattan = abs((width / 2.0) + 200 - id.x) + abs((height / 2.0) - id.y);
-	if (manhattan < 100)
-		ObstructionMap[id.xy] = 0; //1;
-	else ObstructionMap[id.xy] = 0;
+	uint random = hash(time);
+	int n = floor(scaleToRange01(random) * 12.0) + 1;
+	float angle = 2 * 3.1415 / n;
+	if(n > 1){
+		for(int i = 0; i < n; i++){
+			float theta = angle * i;
+			float2 center = float2((width / 2.0) + cos(theta) * (height / 4.0), (height / 2.0) + sin(theta) * (height / 4.0));
+		
+			float manhattan = abs(center.x - id.x) + abs(center.y - id.y);
+			if (manhattan < 150 / n)
+				ObstructionMap[id.xy] = 1;
+		}	
+	} else if(n == 1){
+		float2 center = float2(width / 2.0, height / 2.0);
+
+		float manhattan = abs(center.x - id.x) + abs(center.y - id.y);
+		if (manhattan < 75)
+			ObstructionMap[id.xy] = 1;
+	}
+	
+
+	
 }

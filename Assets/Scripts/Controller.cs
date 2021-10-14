@@ -3,49 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using ComputeShaderUtility;
+using System.IO;
+using UnityEditor;
 
 public class Controller : MonoBehaviour
 {
+    // Shader Properties, Buffers, Textures
     public ComputeShader computeShader;
     ComputeBuffer agentBuffer;
-    public Vector2 referenceResolution; //ref 1920x1080
+    ComputeBuffer teamSettingsBuffer;
     public Vector2 targetResolution; //ref 1920x1080
     private Vector2 size;
-    public int population;
+
+    // Tex
     [SerializeField, HideInInspector] protected RenderTexture displayTexture;
     [SerializeField, HideInInspector] protected RenderTexture trailMap;
     [SerializeField, HideInInspector] protected RenderTexture diffusedTrailMap;
     [SerializeField, HideInInspector] protected RenderTexture obstructionMap;
     [SerializeField, HideInInspector] protected RenderTexture playerMap;
-    public enum SpawnMode { Random, Point, InwardCircle, RandomCircle, Homes }
-    public SpawnMode spawnMode;
-    public float turnFactor;
-    public float decayFactor;
-    public float diffuseFactor;
-    [Range(1.0f, 16.0f)]
-    public float moveSpeed;
-    private bool initialized;
-    public bool showAgentsOnly;
-    public bool showObstructionsOnly;
+
+    // Simulation Properties
+    public int population;
     [Range(1, 3)]
     public int teams;
+    public enum SpawnMode { Random, Point, InwardCircle, RandomCircle, Homes }
+    public SpawnMode spawnMode;
+    public float decayFactor;
+    public float diffuseFactor;
+    public bool generateRandomObstacles;
+    [SerializeField]
+    private TeamSettings[] teamSettings = new TeamSettings[] { new TeamSettings() { }, new TeamSettings() { }, new TeamSettings() { } };
+
+
+    // Playback Settings
+    public int stepsPerUpdate;
+    public bool showAgentsOnly;
+    public bool showObstructionsOnly;
+    public bool useRawColorChannels;
+    public bool useHsvForColorRemapping;
+
+    // Color Fields
+
     public Color teamAColorTarget;
     public Color teamBColorTarget;
     public Color teamCColorTarget;
     public Color bgColorTarget;
-
-    public Color teamAColor;
-    public Color teamBColor;
-    public Color teamCColor;
     public Color bgColor;
-    public Vector3[] homes;
     public bool useCurrenPastelPack;
-    public Color[] pastelPackLights;
-    public Color[] pastelPackMids;
-    public Color[] pastelPackHighs;
-    public Color[] pastelBackBgs;
+    public PaletteModule[] paletteModules;
 
-    public float screenScalingFactor;
+    // Render Settings
+    public bool renderToPng;
+    public bool saveRawChannelsSeparately;
+    public string path;
+    public int frame;
+    public int step;
+    public float renderTimeScale;
+    public float framesPerSecond;
+    public int frameLimit;
+
+    // Other
+    private bool initialized;
+    public Vector3[] homes;
 
     protected virtual void Start()
     {
@@ -68,6 +87,18 @@ public class Controller : MonoBehaviour
             randomizeSettings(true, true, true);
         }
 
+        for (int n = 0; n < 10; n++)
+        {
+            if (Input.GetKeyDown((KeyCode)n + ((int)KeyCode.Alpha1)))
+                if (Input.GetKeyDown((KeyCode)n + ((int)KeyCode.Alpha1)))
+                {
+                    if (n < paletteModules[0].palettes.Length)
+                    {
+                        SelectPalette(paletteModules[0].palettes[n]);
+                    }
+                }
+        }
+
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             Vector2 screenPosition = Input.GetTouch(0).position;
@@ -79,29 +110,36 @@ public class Controller : MonoBehaviour
                 randomizeSettings(true, true, true);
         }
 
-        teamAColor = Color.Lerp(teamAColor, teamAColorTarget, Time.deltaTime * 0.5f);
-        teamBColor = Color.Lerp(teamBColor, teamBColorTarget, Time.deltaTime * 0.5f);
-        teamCColor = Color.Lerp(teamCColor, teamCColorTarget, Time.deltaTime * 0.5f);
+        // Update colors
+        teamSettings[0].teamColor = Color.Lerp(teamSettings[0].teamColor, teamAColorTarget, Time.deltaTime * 0.5f);
+        teamSettings[1].teamColor = Color.Lerp(teamSettings[1].teamColor, teamBColorTarget, Time.deltaTime * 0.5f);
+        teamSettings[2].teamColor = Color.Lerp(teamSettings[2].teamColor, teamCColorTarget, Time.deltaTime * 0.5f);
         bgColor = Color.Lerp(bgColor, bgColorTarget, Time.deltaTime * 0.5f);
+    }
+
+    void Update()
+    {
+        if (renderToPng)
+            RenderToPng();
     }
 
     private void Init()
     {
         ComputeHelper.Release(agentBuffer);
-        if (Screen.width > Screen.height)
-            screenScalingFactor = Screen.width / referenceResolution.x * (referenceResolution.x / targetResolution.x);
-        else
-            screenScalingFactor = Screen.height / referenceResolution.y * (referenceResolution.y / targetResolution.y);
+        ComputeHelper.Release(teamSettingsBuffer);
 
-        size = new Vector2(Screen.width, Screen.height);
-        size /= screenScalingFactor;
+        size = new Vector2(targetResolution.x, targetResolution.y);
+        if (RuntimePlatform.Android == Application.platform)
+            size = new Vector2(Screen.width / 4, Screen.height / 4);
+        paletteModules = this.gameObject.GetComponents<PaletteModule>();
         CreateRenderTexture(ref displayTexture, (int)size.x, (int)size.y);
         CreateRenderTexture(ref trailMap, (int)size.x, (int)size.y);
         CreateRenderTexture(ref diffusedTrailMap, (int)size.x, (int)size.y);
         CreateRenderTexture(ref obstructionMap, (int)size.x, (int)size.y);
         CreateRenderTexture(ref playerMap, (int)size.x, (int)size.y);
         computeShader.SetTexture(3, "ObstructionMap", obstructionMap);
-        computeShader.Dispatch(3, Screen.width / 8, Screen.height / 8, 1);
+        if (generateRandomObstacles)
+            computeShader.Dispatch(3, Screen.width / 8, Screen.height / 8, 1);
         CreateAgents();
         initialized = true;
     }
@@ -123,22 +161,18 @@ public class Controller : MonoBehaviour
             computeShader.SetInt(Shader.PropertyToID("height"), (int)size.y);
             computeShader.SetFloat("decayRate", decayFactor);
             computeShader.SetFloat("diffuseRate", diffuseFactor);
-            computeShader.SetFloat("turnFactor", turnFactor);
-            computeShader.SetFloat("moveSpeed", moveSpeed);
 
-            computeShader.SetInts("redHome", new int[] { (int)(size.x / 2 + homes[0].x * size.x), (int)(size.y / 2 + homes[0].y * size.y), (int)homes[0].z });
-            computeShader.SetInts("greenHome", new int[] { (int)(size.x / 2 + homes[1].x * size.x), (int)(size.y / 2 + homes[1].y * size.y), (int)homes[1].z });
-            computeShader.SetInts("blueHome", new int[] { (int)(size.x / 2 + homes[2].x * size.x), (int)(size.y / 2 + homes[2].y * size.y), (int)homes[2].z });
+            ComputeHelper.CreateAndSetBuffer<TeamSettings>(ref teamSettingsBuffer, teamSettings, computeShader, "teamSettings", 0);
+            ComputeHelper.CreateAndSetBuffer<TeamSettings>(ref teamSettingsBuffer, teamSettings, computeShader, "teamSettings", 2);
 
-            computeShader.SetFloats("teamColorA", new float[] { teamAColor.r, teamAColor.g, teamAColor.b });
-            computeShader.SetFloats("teamColorB", new float[] { teamBColor.r, teamBColor.g, teamBColor.b });
-            computeShader.SetFloats("teamColorC", new float[] { teamCColor.r, teamCColor.g, teamCColor.b });
+            computeShader.SetBool("useHsvForColorRemapping", useHsvForColorRemapping);
+
             computeShader.SetVector("bgColor", bgColor);
-
             ComputeHelper.Dispatch(computeShader, population, 1, 1, 0);
             computeShader.Dispatch(1, Screen.width / 8, Screen.height / 8, 1);
             ComputeHelper.CopyRenderTexture(diffusedTrailMap, trailMap);
-            computeShader.Dispatch(2, Screen.width / 8, Screen.height / 8, 1);
+            if (!useRawColorChannels)
+                computeShader.Dispatch(2, Screen.width / 8, Screen.height / 8, 1);
         }
     }
 
@@ -153,6 +187,9 @@ public class Controller : MonoBehaviour
             float seed = Random.value;
             if (teams == 3)
             {
+                computeShader.SetInts("redHome", new int[] { (int)(size.x / 2 + homes[0].x * size.x), (int)(size.y / 2 + homes[0].y * size.y), (int)homes[0].z });
+                computeShader.SetInts("greenHome", new int[] { (int)(size.x / 2 + homes[1].x * size.x), (int)(size.y / 2 + homes[1].y * size.y), (int)homes[1].z });
+                computeShader.SetInts("blueHome", new int[] { (int)(size.x / 2 + homes[2].x * size.x), (int)(size.y / 2 + homes[2].y * size.y), (int)homes[2].z });
                 if (seed < 0.33f)
                 {
                     species.x = 1;
@@ -192,6 +229,7 @@ public class Controller : MonoBehaviour
                 species.x = 1;
                 if (spawnMode == SpawnMode.Homes)
                     centre = new Vector2((int)(size.x / 2 + homes[2].x * size.x), (int)(size.y / 2 + homes[2].y * size.y));
+                computeShader.SetInts("redHome", new int[] { (int)(size.x / 2), (int)(size.y / 2), (int)homes[0].z });
             }
 
 
@@ -221,7 +259,7 @@ public class Controller : MonoBehaviour
             }
             else if (spawnMode == SpawnMode.RandomCircle)
             {
-                startPos = centre + Random.insideUnitCircle * size.y * 0.15f;
+                startPos = centre + Random.insideUnitCircle * size.y * 0.5f;
                 angle = randomAngle;
             }
 
@@ -235,24 +273,49 @@ public class Controller : MonoBehaviour
         computeShader.SetInt("numAgents", population);
     }
 
-    private void Render(RenderTexture destination)
+    private void RenderToScreen(RenderTexture destination)
     {
-        if (initialized)
-            ComputeHelper.ClearRenderTexture(playerMap);
+        if (!renderToPng)
+        {
+            if (initialized)
+                ComputeHelper.ClearRenderTexture(playerMap);
 
-        UpdateSim();
-        SetShaderParameters();
+            // We leave this at 1 because when live-rendering, adjusting steps per update doesn't actually change the speed of simulation, because it is bound by performance.
+            UpdateSim(1);
 
-        if (showAgentsOnly)
-            Graphics.Blit(playerMap, destination);
-        else if (showObstructionsOnly)
-            Graphics.Blit(obstructionMap, destination);
-        else Graphics.Blit(displayTexture, destination);
+            if (showAgentsOnly)
+                Graphics.Blit(playerMap, destination);
+            else if (showObstructionsOnly)
+                Graphics.Blit(obstructionMap, destination);
+            else if (useRawColorChannels)
+                Graphics.Blit(trailMap, destination);
+            else Graphics.Blit(displayTexture, destination);
+        }
+    }
+
+    private void RenderToPng()
+    {
+        if (frameLimit <= 0 || frame < frameLimit)
+        {
+            if (initialized)
+                ComputeHelper.ClearRenderTexture(playerMap);
+
+            UpdateSim(stepsPerUpdate);
+
+            if (renderToPng)
+            {
+                if (saveRawChannelsSeparately || useRawColorChannels)
+                    DumpRenderTexture(ref trailMap, Path.Combine(Application.streamingAssetsPath, path, "raw/"), frame + "_rgb.png");
+                DumpRenderTexture(ref displayTexture, Path.Combine(Application.streamingAssetsPath, path), frame + ".png");
+                framesPerSecond = frame / Time.time;
+            }
+        }
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        Render(destination);
+        if (!renderToPng)
+            RenderToScreen(destination);
     }
 
 
@@ -283,10 +346,18 @@ public class Controller : MonoBehaviour
         texture.filterMode = filterMode;
     }
 
-    private void UpdateSim()
+    private void UpdateSim(int steps)
     {
-        computeShader.SetFloat("deltaTime", Time.fixedDeltaTime);
-        computeShader.SetFloat("time", Time.time);
+        for (int s = 0; s < steps; s++)
+        {
+            computeShader.SetFloat("deltaTime", renderTimeScale);
+            computeShader.SetFloat("time", steps * renderTimeScale);
+
+            SetShaderParameters();
+        }
+        if (renderToPng && (frameLimit <= 0 || frame < frameLimit))
+            frame++;
+        step += steps;
     }
 
     public void randomizeSettings(bool changeSettings = true, bool changeColor = false, bool reinitialize = false)
@@ -294,37 +365,60 @@ public class Controller : MonoBehaviour
         if (changeSettings)
         {
             spawnMode = (SpawnMode)Mathf.FloorToInt(Random.value * 5);
-            turnFactor = Random.value;
-            decayFactor = 0.1f * Mathf.Pow(10, -1 * Mathf.FloorToInt(Random.value * 8));
-            diffuseFactor =  1.0f * Mathf.Pow(10, -1 * Mathf.FloorToInt(Random.value * 4));
-            moveSpeed = Random.value * 5 + 1;
+            decayFactor = 0.1f * Mathf.Pow(10, -1 * Mathf.FloorToInt(Random.value * 7));
+            diffuseFactor = 1.0f * Mathf.Pow(10, -1 * Mathf.FloorToInt(Random.value * 4));
+
+            for (int t = 0; t < teamSettings.Length; t++)
+            {
+                TeamSettings ts = teamSettings[t];
+                ts.moveSpeed = UnityEngine.Random.Range(0.75f, 1.25f);
+                ts.turnFactor = UnityEngine.Random.Range(0.75f, 1f);
+                ts.sensorPosOffset = Mathf.FloorToInt(Random.value * 25 + 5);
+                ts.sensorAngleOffset = UnityEngine.Random.Range(15f, 45f);
+                teamSettings[t] = ts;
+            }
+
             teams = Mathf.FloorToInt(Random.value * 3) + 1;
+
+            generateRandomObstacles = false; //Mathf.FloorToInt(Random.value * 2.0f) != 0;
         }
         if (changeColor)
         {
-            if (useCurrenPastelPack)
+            paletteModules = this.gameObject.GetComponents<PaletteModule>();
+            if (paletteModules != null && paletteModules.Length > 0)
             {
-                int index = Mathf.FloorToInt(Random.value * pastelPackLights.Length);//pastelPackLights.Length-1;//
-                teamAColorTarget = pastelPackLights[index];
-                teamBColorTarget = pastelPackMids[index];
-                teamCColorTarget = pastelPackHighs[index];
-                bgColorTarget = pastelBackBgs[index];
+                if (useCurrenPastelPack)
+                {
+                    PaletteModule palettes = paletteModules[Mathf.FloorToInt(Random.value * paletteModules.Length)];
+                    PaletteModule.Palette palette = palettes.palettes[Mathf.FloorToInt(Random.value * palettes.palettes.Length)];
+                    SelectPalette(palette);
+                }
+                else
+                {
+                    teamAColorTarget = Random.ColorHSV();
+                    teamBColorTarget = Random.ColorHSV();
+                    teamCColorTarget = Random.ColorHSV();
+                    bgColorTarget = Random.ColorHSV() * 0.15f;
+                }
             }
-            else
-            {
-                teamAColorTarget = Random.ColorHSV();
-                teamBColorTarget = Random.ColorHSV();
-                teamCColorTarget = Random.ColorHSV();
-                bgColorTarget = Random.ColorHSV() * 0.15f;
-            }
+
         }
         if (reinitialize)
             Init();
     }
 
+    private void SelectPalette(PaletteModule.Palette palette)
+    {
+        teamAColorTarget = palette.palette[0];
+        teamBColorTarget = palette.palette[1];
+        teamCColorTarget = palette.palette[2];
+        bgColorTarget = palette.palette[3];
+    }
+
     void OnDestroy()
     {
         ComputeHelper.Release(agentBuffer);
+        ComputeHelper.Release(teamSettingsBuffer);
     }
 
     public struct Agent
@@ -335,5 +429,29 @@ public class Controller : MonoBehaviour
         public int unusedSpeciesChannel;
     }
 
+    [System.Serializable]
+    public struct TeamSettings
+    {
+        public float turnFactor;
+        public float moveSpeed;
+        public float sensorAngleOffset;
+        public float sensorPosOffset;
+        public float sensorRadius;
+        public Color teamColor;
+    }
 
+    public static void DumpRenderTexture(ref RenderTexture rt, string path, string filename)
+    {
+        RenderTexture.active = rt;
+        Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        RenderTexture.active = null;
+
+        byte[] bytes;
+        bytes = tex.EncodeToPNG();
+        Destroy(tex);
+
+        System.IO.Directory.CreateDirectory(path);
+        System.IO.File.WriteAllBytes(Path.Combine(path, filename), bytes);
+    }
 }
